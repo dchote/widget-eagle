@@ -2,42 +2,18 @@
 // Defining the globals above helps Cloud9 not show warnings for those variables
 
 // ChiliPeppr Widget/Element Javascript
-
 requirejs.config({
-    /*
-    Dependencies can be defined here. ChiliPeppr uses require.js so
-    please refer to http://requirejs.org/docs/api.html for info.
-    
-    Most widgets will not need to define Javascript dependencies.
-    
-    Make sure all URLs are https and http accessible. Try to use URLs
-    that start with // rather than http:// or https:// so they simply
-    use whatever method the main page uses.
-    
-    Also, please make sure you are not loading dependencies from different
-    URLs that other widgets may already load like jquery, bootstrap,
-    three.js, etc.
-    
-    You may slingshot content through ChiliPeppr's proxy URL if you desire
-    to enable SSL for non-SSL URL's. ChiliPeppr's SSL URL is
-    https://i2dcui.appspot.com which is the SSL equivalent for
-    http://chilipeppr.com
-    */
-   paths: {
-       // Don't put .js at end of URL (except when passing thru CP geturl proxy)
-        // Three: '//i2dcui.appspot.com/geturl?url=http://threejs.org/build/three.min.js',
-        Three: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r76/three',
-        ThreeTextGeometry: '//i2dcui.appspot.com/js/three/TextGeometry',
-        ThreeFontUtils: '//i2dcui.appspot.com/js/three/FontUtils',
-        ThreeHelvetiker: '//i2dcui.appspot.com/js/three/threehelvetiker',
+    paths: {
+        Three: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/86/three',
         Clipper: '//i2dcui.appspot.com/js/clipper/clipper_unminified'
-   },
-   shim: {
-       ThreeTextGeometry: ['Three'],
-       ThreeFontUtils: ['Three', 'ThreeTextGeometry'],
-       ThreeHelvetiker: ['Three', 'ThreeTextGeometry', 'ThreeFontUtils'],
-   }
+    },
+    shim: {
+        Three: {
+            exports: 'THREE'
+        },
+    }
 });
+
 
 // Test this element. This code is auto-removed by the chilipeppr.load()
 cprequire_test(["inline:com-chilipeppr-widget-eagle"], function (ew) {
@@ -50,27 +26,20 @@ cprequire_test(["inline:com-chilipeppr-widget-eagle"], function (ew) {
     console.log("test running of " + ew.id);
     //ew.init();
 
-    $('#com-chilipeppr-widget-eagle').css('position', 'relative');
+    $('#com-chilipeppr-widget-eagle').css('position', 'absolute');
     $('#com-chilipeppr-widget-eagle').css('background', 'none');
     $('#com-chilipeppr-widget-eagle').css('width', '320px');
     $('body').prepend('<div id="3dviewer"></div>');
 
-    //chilipeppr.load("#3dviewer", "http://fiddle.jshell.net/chilipeppr/y3HRF/195/show/light/", function () {
     chilipeppr.load(
       "#3dviewer",
-      "http://raw.githubusercontent.com/chilipeppr/widget-3dviewer/master/auto-generated-widget.html",
+      "http://raw.githubusercontent.com/dchote/widget-3dviewer/master/auto-generated-widget.html",
       function() {
         cprequire(['inline:com-chilipeppr-widget-3dviewer'], function (threed) {
             threed.init({
                 doMyOwnDragDrop: false
             });
-            //$('#com-chilipeppr-widget-3dviewer .panel-heading').addClass('hidden');
-            //autolevel.addRegionTo3d();
-            //autolevel.loadFileFromLocalStorageKey('com-chilipeppr-widget-autolevel-recent8');
-            //autolevel.toggleShowMatrix();
-
-            // only init eagle widget once 3d is loaded
-            // set doMyOwnDragDrop
+            $('#com-chilipeppr-widget-3dviewer .panel-heading').addClass('hidden');
             ew.init(true);
         });
     });
