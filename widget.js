@@ -2283,14 +2283,12 @@ onAddGcode : function(addGcodeCallback, gcodeParts, eagleWidget, helpDesc){
             console.log("onDraw3dReadyAfter");
             // ask 3d viewer to set things up now
             chilipeppr.publish('/com-chilipeppr-widget-3dviewer/setunits', "mm" );
-            chilipeppr.publish('/com-chilipeppr-widget-3dviewer/drawextents' );
+            chilipeppr.publish('/com-chilipeppr-widget-3dviewer/drawextents', "");
             //This line is disable to keep view angle unchanges when refresh is clicked
             //XXXchilipeppr.publish('/com-chilipeppr-widget-3dviewer/viewextents' );
             $(window).trigger('resize');
-            if (this.obj3dmeta && this.obj3dmeta.widget) {
-                this.obj3dmeta.widget.wakeAnimate();
-            }
             
+            chilipeppr.publish('/com-chilipeppr-widget-3dviewer/wakeanimage', "");
         },
 
         // Section on exporting Gcode
@@ -4347,7 +4345,7 @@ onAddGcode : function(addGcodeCallback, gcodeParts, eagleWidget, helpDesc){
 
 
             // wake animation so we see the results
-            this.obj3dmeta.widget.wakeAnimate();
+            //this.obj3dmeta.widget.wakeAnimate();
             //camera.aspect = window.innerWidth / window.innerHeight;
             //this.obj3dmeta.camera.updateProjectionMatrix();
             //this.obj3dmeta.scene.updateMatrixWorld();
@@ -7438,13 +7436,13 @@ onAddGcode : function(addGcodeCallback, gcodeParts, eagleWidget, helpDesc){
             if (this.obj3d && this.mySceneGroup) {
                 this.obj3d.add(this.mySceneGroup);
             }
-            this.obj3dmeta.widget.wakeAnimate();
+            chilipeppr.publish('/com-chilipeppr-widget-3dviewer/wakeanimate', "");
         },
         sceneRemoveMySceneGroup: function() {
             if (this.obj3d && this.mySceneGroup) {
                 this.obj3d.remove(this.mySceneGroup);
             }
-            this.obj3dmeta.widget.wakeAnimate();
+            chilipeppr.publish('/com-chilipeppr-widget-3dviewer/wakeanimate', "");
         },
         sceneAdd: function (obj) {
             //chilipeppr.publish("/com-chilipeppr-widget-3dviewer/sceneadd", obj);
@@ -7463,7 +7461,7 @@ onAddGcode : function(addGcodeCallback, gcodeParts, eagleWidget, helpDesc){
             this.mySceneGroup.add(obj);
             //this.obj3dmeta.scene.add(obj);
             
-            this.obj3dmeta.widget.wakeAnimate();
+            chilipeppr.publish('/com-chilipeppr-widget-3dviewer/wakeanimate', "");
         },
         sceneRemove: function (obj) {
             //chilipeppr.publish("/com-chilipeppr-widget-3dviewer/sceneremove", obj);
@@ -7471,7 +7469,8 @@ onAddGcode : function(addGcodeCallback, gcodeParts, eagleWidget, helpDesc){
             //this.obj3dmeta.scene.remove(obj);
             if (this.mySceneGroup != null)
                 this.mySceneGroup.remove(obj);
-            this.obj3dmeta.widget.wakeAnimate();
+            
+            chilipeppr.publish('/com-chilipeppr-widget-3dviewer/wakeanimate', "");
         },
         draw: function (e) {
             this.eagle.draw();
