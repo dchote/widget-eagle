@@ -5103,13 +5103,17 @@ onAddGcode : function(addGcodeCallback, gcodeParts, eagleWidget, helpDesc){
             console.log("smd:", smd);
             // get bounding box
             var threeInflateSmd = this.createClipperPathsAsMesh(inflatedSmd, 0x00ff00, 0.9);
-            var bbox = new THREE.BoundingBoxHelper(threeInflateSmd);
-            bbox.update();
-            console.log("bbox:", bbox);
-            var cx = ((bbox.box.max.x - bbox.box.min.x) / 2) + bbox.box.min.x;
-            var cy = ((bbox.box.max.y - bbox.box.min.y) / 2) + bbox.box.min.y;
-            var strokeX = this.addStrokeCapsToLine(bbox.box.min.x, cy, bbox.box.max.x, cy, width, "square" );
-            var strokeY = this.addStrokeCapsToLine(cx, bbox.box.min.y, cx, bbox.box.max.y, width, "square" );
+            
+            var helper = new THREE.BoxHelper(threeInflateSmd, 0xff0000);
+            var box = new THREE.Box3();
+            box.setFromObject(helper);
+            
+            console.log("bbox:", box);
+            var cx = ((box.max.x - box.min.x) / 2) + box.min.x;
+            var cy = ((box.max.y - box.min.y) / 2) + box.min.y;
+            var strokeX = this.addStrokeCapsToLine(box.min.x, cy, box.max.x, cy, width, "square" );
+            var strokeY = this.addStrokeCapsToLine(cx, box.min.y, cx, box.max.y, width, "square" );
+            
             //strokeX = this.getAllPathsAsOuterOrientation(strokeX);
             var clipperStroke = this.getUnionOfClipperPaths([strokeX[0], strokeY[0]]);
             //this.drawClipperPaths(clipperStroke, 0x00ff00, 0.99, debugZ);
