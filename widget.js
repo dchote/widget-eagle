@@ -2,6 +2,7 @@
 // Defining the globals above helps Cloud9 not show warnings for those variables
 
 // ChiliPeppr Widget/Element Javascript
+// why is this not loading the right one!!
 requirejs.config({
     paths: {
         Three: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/86/three',
